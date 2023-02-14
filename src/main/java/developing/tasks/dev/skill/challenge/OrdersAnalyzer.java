@@ -51,6 +51,7 @@ public class OrdersAnalyzer {
         resultMap.put(DayOfWeek.FRIDAY, calculateSumOfQuantity(DayOfWeek.FRIDAY, productIds, orders));
         resultMap.put(DayOfWeek.SATURDAY, calculateSumOfQuantity(DayOfWeek.SATURDAY, productIds, orders));
         resultMap.put(DayOfWeek.SUNDAY, calculateSumOfQuantity(DayOfWeek.SUNDAY, productIds, orders));
+        System.out.println(resultMap);
         return new HashMap<>(resultMap);
     }
 
@@ -59,6 +60,7 @@ public class OrdersAnalyzer {
                 .filter(y -> y.creationDate.getDayOfWeek() == dayOfWeek)
                 .flatMap(d -> d.orderLines.stream())
                 .filter(r -> r.productId == productIds)
-                .collect(Collectors.summingInt(f -> f.quantity)); // strumien zle liczy
+                .mapToInt(f -> f.quantity)
+                .sum();
     }
 }
